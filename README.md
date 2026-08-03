@@ -1,28 +1,22 @@
-# complexbox
+# ComplexBox
 
-`complexbox` is a unified Python toolkit for multivariate time-series analysis,
-dynamical independence, and information emergence. It brings three related
-MATLAB toolboxes into one NumPy/SciPy API while keeping the original matrix
-orientation, numerical conventions, and reference algorithms visible.
+Hi users! `ComplexBox` is a toolkit for complexity science and emergence wizardry. It brings together multivariate time-series analysis using complexity, criticality, and emergence measures. Currently it holds analyses for dynamical independence, Granger causality and causal emergence, which includes $\Phi$-ID based measures. I attempted to port and extend three MATLAB toolboxes into one NumPy/SciPy API with a torch extension. This was a serious slog and I am not a software engineer, so any feedback is much appreciated.
 
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![License: GPL v3](https://img.shields.io/badge/license-GPL%20v3-blue.svg)](LICENSE)
 
-The project is in beta. The NumPy/SciPy path is the scientific reference;
-deterministic MATLAB fixtures protect the selected MVGC2 and SSDI paths named
-in the validation section. Optional Torch backends accelerate regular,
-batchable kernels without replacing SciPy's DARE, Lyapunov, statistical, or
-spectral-factorisation routines.
+The project is currently in beta. There are optional Torch backends which accelerate regular,
+batchable kernels without replacing SciPy's DARE, Lyapunov, statistical, or spectral-factorisation routines. This is thanks to the correct prompting to my awesome ChatBOT helpers. 
 
 | Source toolbox | Module | Scope |
 |---|---|---|
 | [MVGC2](https://github.com/lcbarnett/MVGC2) | `complexbox.mvgc` | VAR and innovations-form state-space Granger causality |
 | [SSDI-1](https://github.com/lcbarnett/ssdi) | `complexbox.ssdi` | Dynamical-dependence optimisation on the Grassmannian |
-| [ELPH](https://gitlab.com/concog/elph) | `complexbox.elph` | PhiID, emergence measures, entropy, and complexity |
+| [ELPH](https://gitlab.com/concog/elph) | `complexbox.elph` | PhiID, entropy, and complexity |
 
 ## Installation
 
-Until a package release is published, install from a local clone:
+This is currently under construction, so, until a package release is published, install from a local clone:
 
 ```bash
 python -m pip install -e .
@@ -41,38 +35,36 @@ python -m pip install -e ".[dev]"    # tests, docs, and development tools
 
 For an innovations-form state-space transfer function
 
-\[
+$
 H(z)=I+C(zI-A)^{-1}K, \qquad S(\omega)=H(\omega)H(\omega)^*,
-\]
+$
 
-and an orthonormal column basis \(L\in\mathbb{R}^{n\times m}\), the broadband
-objective used by MATLAB SSDI-1 is Eq. (24) of Barnett and Seth (2023), written
-in the package convention as
+and an orthonormal column basis $L\in\mathbb{R}^{n\times m}$, the broadband
+objective used is Eq. (24) of Barnett and Seth (2023), written in the package convention as
 
-\[
+$
 D(L)=\frac{1}{\pi}\int_0^\pi
 \log\det\!\left(L^\mathsf{T}S(\omega)L\right)d\omega.
-\]
+$
 
 `ssdi.trfun2dd` retains that MATLAB API exactly. Its returned frequency samples
-are half-log-determinant quadrature terms; they are not the pointwise spectral
-DD. The paper's Eq. (25) curve is
+are half-log-determinant quadrature terms. The paper's Eq. (25) curve is
 
-\[
+$
 f_L(\omega)=\log
 \frac{\det\!\left(L^\mathsf{T}HH^*L\right)}
 {\det\!\left[(L^\mathsf{T}HL)(L^\mathsf{T}HL)^*\right]},
-\]
+$
 
 available through `ssdi.trfun2dd_pointwise`; Eq. (26) band averages are
 available through `ssdi.trfun2dd_band` and `ssdi.trfun2dd_bandgrad`.
 
 Stability is based on eigenvalue radii, never the largest singular value:
 
-\[
+$
 \rho_A=\max|\operatorname{eig}(A)|<1,\qquad
 \rho_B=\max|\operatorname{eig}(A-KC)|<1.
-\]
+$
 
 `mvgc.ss2fres` uses both radii in its fast power-of-two estimate. Its default
 mode, like MVGC2, increases the frequency resolution until the integrated
@@ -115,7 +107,7 @@ dds, bases, convergence, histories = ssdi.opt_gd_ddx_mruns(
 print(dds[0], convergence[0], rho_b)
 ```
 
-With the Torch extra installed, the same high-level call can batch restarts:
+With the Torch extra installed, the same high-level call can batch restarts (this is super sexy!):
 
 ```python
 dds, bases, convergence, histories = ssdi.opt_gd_ddx_mruns(
@@ -128,8 +120,7 @@ dds, bases, convergence, histories = ssdi.opt_gd_ddx_mruns(
 )
 ```
 
-Torch defaults to float64/complex128 parity mode. It never silently changes
-the requested device or dtype.
+Torch defaults to float64/complex128 parity mode. It never silently changes the requested device or dtype.
 
 ### Pointwise and band-limited spectral DD
 
@@ -225,6 +216,17 @@ See [the MATLAB/Python mapping](docs/mapping.md) for the current API coverage.
 [LICENSE](LICENSE), upstream attribution is in [NOTICE](NOTICE), and retained
 MIT/BSD notices are in [THIRD_PARTY_LICENSES.md](THIRD_PARTY_LICENSES.md).
 
-If you use the SSDI component, cite Barnett and Seth, *Physical Review E* 108,
-014304 (2023), <https://doi.org/10.1103/PhysRevE.108.014304>, alongside the
-relevant MVGC2 and ELPH publications.
+If you do use this toolbox please cite it:
+
+```bibtex
+@software{complexbox,
+  author = {Milinkovic, Borjan},
+  title = {ComplexBox: A toolkit for complexity science and emergence wizardry},
+  year = {2026},
+  note = {ComplexBox: A toolkit for complexity science and emergence wizardry},
+  url = {https://github.com/borjan/code/complexbox}
+}
+```
+
+
+
