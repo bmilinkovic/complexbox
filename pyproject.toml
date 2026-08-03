@@ -1,0 +1,124 @@
+[build-system]
+requires = ["setuptools>=77", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "complexbox"
+version = "0.1.0"
+description = "Python adaptations of MVGC2, SSDI-1, and ELPH, with fixture-backed MATLAB parity for selected MVGC2 and SSDI numerical paths."
+readme = "README.md"
+license = "GPL-3.0-only"
+license-files = ["LICENSE", "NOTICE", "THIRD_PARTY_LICENSES.md"]
+requires-python = ">=3.10"
+authors = [
+    { name = "Borjan Milinkovic", email = "borjan.milinkovic@gmail.com" },
+]
+keywords = [
+    "granger-causality",
+    "dynamical-dependence",
+    "integrated-information",
+    "phi-id",
+    "causal-emergence",
+    "state-space",
+    "neuroscience",
+    "complexity-science",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Information Analysis",
+    "Topic :: Scientific/Engineering :: Mathematics",
+]
+dependencies = [
+    "numpy>=1.24",
+    "scipy>=1.11",
+]
+
+[project.optional-dependencies]
+fast = ["numba>=0.58"]
+plot = ["matplotlib>=3.7"]
+torch = ["torch>=2.2"]
+test = [
+    "pytest>=7.4",
+    "pytest-cov>=4.1",
+]
+docs = [
+    "mkdocs>=1.5",
+    "mkdocs-material>=9.4",
+    "mkdocstrings[python]>=0.24",
+    "mkdocs-jupyter>=0.24",
+]
+dev = [
+    "complexbox[test,docs,fast,plot]",
+    "ruff>=0.4",
+    "pre-commit>=3.5",
+    "ipykernel",
+    "jupyter",
+]
+all = ["complexbox[fast,plot,torch]"]
+
+[project.urls]
+Homepage = "https://github.com/bmilinkovic/complexbox"
+Documentation = "https://github.com/bmilinkovic/complexbox/tree/main/docs"
+Repository = "https://github.com/bmilinkovic/complexbox"
+Issues = "https://github.com/bmilinkovic/complexbox/issues"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+complexbox = ["py.typed"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = [
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings
+    "F",   # pyflakes
+    "I",   # isort
+    "B",   # flake8-bugbear
+    "UP",  # pyupgrade
+    "NPY", # numpy-specific
+]
+ignore = [
+    "E501",  # line length handled by the Ruff formatter
+    "B008",  # do not perform function calls in argument defaults (numpy convention)
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["B"]
+"examples/**" = ["B", "E402"]
+
+[tool.pytest.ini_options]
+minversion = "7.0"
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+addopts = [
+    "-ra",
+    "--strict-markers",
+    "--strict-config",
+]
+markers = [
+    "slow: marks tests as slow (deselect with -m 'not slow')",
+    "fixture: requires MATLAB-generated .mat fixture",
+]
+
+[tool.coverage.run]
+source = ["complexbox"]
+branch = true
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "raise NotImplementedError",
+    "if TYPE_CHECKING:",
+    "if __name__ == .__main__.:",
+]

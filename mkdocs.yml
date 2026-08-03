@@ -1,0 +1,21 @@
+site_name: complexbox
+site_description: Python tools for MVGC, SSDI, and information emergence
+repo_name: bmilinkovic/complexbox
+repo_url: https://github.com/bmilinkovic/complexbox
+
+theme:
+  name: material
+
+nav:
+  - Overview: index.md
+  - MATLAB/Python mapping: mapping.md
+
+markdown_extensions:
+  - admonition
+  - pymdownx.arithmatex:
+      generic: true
+
+extra_javascript:
+  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
+
+strict: true

@@ -1,0 +1,31 @@
+complexbox
+Copyright (C) 2026 Borjan Milinkovic and contributors
+
+This project includes Python adaptations of algorithms and interfaces from:
+
+- MVGC2, by Lionel Barnett and collaborators
+  https://github.com/lcbarnett/MVGC2
+- SSDI-1, by Lionel Barnett
+  https://github.com/lcbarnett/ssdi
+- ELPH, by Pedro Mediano and collaborators
+  https://gitlab.com/concog/elph
+
+Those projects retain their respective copyrights and licenses. The complete
+ELPH MIT notice and the BSD notices for Jeffrey Wildman's ``MaximalCliques``
+implementation, the Knyazev-Argentati ``subspacea`` algorithm, and David M.
+Groppe's ``fdr_bh`` helper are reproduced in THIRD_PARTY_LICENSES.md. MVGC2
+and SSDI-1 are distributed under GPLv3 terms; their source repositories and
+headers provide additional attribution.
+
+Within the ELPH adaptations, the LZ76 implementation is attributed upstream
+to Pedro Mediano, Fernando Rosas, and Joel Dyer; ``CovarianceSelectionModel``
+to Sebastian Dohnany; and the emergence measures to Pedro Mediano and Fernando
+Rosas.
+
+The MVGC2 Wilson spectral-factorisation source is attributed upstream to M.
+Dhamala and G. Rangarajan (original implementation, 2006), S. K. Mody
+(modification, 2016), M. Dhamala (revision, 2017), and L. Barnett (MVGC2
+adaptation, 2019).
+
+complexbox as a whole is distributed under the GNU General Public License,
+version 3 only; the complete license text is in LICENSE.
