@@ -377,7 +377,7 @@ def tsdata_to_ss(
 
     Port of MVGC2's ``core/tsdata_to_ss.m`` (Larimore's Canonical Correlations
     Analysis). ``pf`` is the past/future horizon; ``r`` the state dimension
-    (auto-selected via SVD knee if ``None``).
+    (auto-selected via Bauer's SVC if ``None``; constrained to ``r >= n``).
 
     Returns ``(A, C, K, V)``.
     """
@@ -417,11 +417,18 @@ def tsdata_to_ss(
     M_mat = np.linalg.solve(Lf, Spf.T) @ np.linalg.inv(Lp.T)
     U, S, Vt = np.linalg.svd(M_mat, full_matrices=False)
 
+    rmax = n * min(p, f)
     if r is None:
-        # Bauer's SVC: pick the knee. We default to half the singular values
-        # above threshold 1e-3.
-        r = int(np.sum(S > 1e-3))
-        r = max(min(r, p * n - 1), n)
+        from .modelorder import bauer_svc
+
+        r, _ = bauer_svc(S, n_obs=n, n_eff=M, min_order=n)
+    else:
+        if not isinstance(r, (int, np.integer)):
+            raise TypeError("r must be an integer or None")
+        if not n <= r <= rmax:
+            raise ValueError(
+                f"state dimension must satisfy {n} <= r <= {rmax}"
+            )
 
     # State estimate
     Z_hat = np.diag(S[:r]) @ Vt[:r, :] @ np.linalg.inv(Lp).T @ P  # shape (r, M)

@@ -74,7 +74,7 @@ from .mi import (
     cpsd_to_smvmi,
     cpsd_to_spwcmi,
 )
-from .modelorder import VARModelOrder, tsdata_to_ssmo, tsdata_to_varmo
+from .modelorder import VARModelOrder, bauer_svc, tsdata_to_ssmo, tsdata_to_varmo
 from .ss import (
     ss2fres,
     ss2itrfun,
@@ -262,6 +262,7 @@ __all__ = [
     "significance",
     # model order
     "VARModelOrder",
+    "bauer_svc",
     "tsdata_to_varmo",
     "tsdata_to_ssmo",
 ]
